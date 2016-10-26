@@ -13,23 +13,19 @@ class Serving02ArrayLists < Attestify::Test
   # These are the methods you will implement.
 
   def test_shovel_exists
-    assert_respond_to ArrayList.new, :<<
-    assert_equal 1, ArrayList.new.method(:<<).arity
+    assert_method_exists ArrayList, :<<, 1
   end
 
   def test_reverse_shovel_exists
-    assert_respond_to ArrayList.new, :>>
-    assert_equal 1, ArrayList.new.method(:>>).arity
+    assert_method_exists ArrayList, :>>, 1
   end
 
   def test_delete_exists
-    assert_respond_to ArrayList.new, :delete
-    assert_equal 1, ArrayList.new.method(:delete).arity
+    assert_method_exists ArrayList, :delete, 1
   end
 
   def test_index_set_exists
-    assert_respond_to ArrayList.new, :[]=
-    assert_equal 2, ArrayList.new.method(:[]=).arity
+    assert_method_exists ArrayList, :[]=, 2
   end
 
   # This is the behavior for the methods you will implement.
@@ -215,5 +211,13 @@ class Serving02ArrayLists < Attestify::Test
     100.times { array_list << 42 }
     100.times { array_list.delete(0) }
     assert_equal 0, array_list.size
+  end
+
+  def test_delete_edge_case
+    array_list = ArrayList.new
+    array_list.instance_variable_get(:@array).size.times { array_list << 42 }
+    assert_equal 42, array_list.delete(5)
+    assert_equal 9, array_list.size
+    assert_nil array_list.instance_variable_get(:@array)[9]
   end
 end
